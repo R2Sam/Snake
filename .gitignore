@@ -1,0 +1,14 @@
+*.exe
+*.o
+*.d
+*.sublime-project
+*.sublime-workspace
+*.res
+*build
+*.cache
+*.vscode
+*CMakeLists.*
+*.bat
+*.sh
+*.py
+*.ini
