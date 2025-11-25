@@ -37,15 +37,27 @@ bool Snake::Update(const float deltaT)
 {
 	Input();
 
-	Vector2i headPosition = _positions.front();
-	Vector2i nextPosition = headPosition + _direction;
-	SanitizePosition(nextPosition);
-
 	static float accumulator = 0;
 	accumulator += deltaT;
 
 	if (accumulator >= 1.0 / _speed)
 	{
+		if (_directions.size())
+		{
+		    Vector2i nextDirection = _directions.front();
+
+		    if (!(nextDirection.x == -_direction.x && nextDirection.y == -_direction.y))
+		    {
+		        _direction = nextDirection;
+		    }
+
+		    _directions.pop_front();
+		}
+
+		Vector2i headPosition = _positions.front();
+		Vector2i nextPosition = headPosition + _direction;
+		SanitizePosition(nextPosition);
+
 		if (_grid.IsSnake(nextPosition) && !(nextPosition.x == _positions.back().x && nextPosition.y == _positions.back().y))
 		{
 			return false;
@@ -74,25 +86,25 @@ u32 Snake::GetSize()
 
 void Snake::Input() 
 {
-	if (IsKeyPressed(KEY_UP) && _direction.y != 1)
-	{
-		_direction = Vector2i{0, -1};
-	}
+    if (IsKeyPressed(KEY_UP) && _directions.size() < 2)
+    {
+        _directions.push_back(Vector2i{0, -1});
+    }
 
-	if (IsKeyPressed(KEY_DOWN) && _direction.y != -1)
-	{
-		_direction = Vector2i{0, 1};
-	}
+    else if (IsKeyPressed(KEY_DOWN) && _directions.size() < 2)
+    {
+        _directions.push_back(Vector2i{0, 1});
+    }
 
-	if (IsKeyPressed(KEY_RIGHT) && _direction.x != -1)
-	{
-		_direction = Vector2i{1, 0};
-	}
+    else if (IsKeyPressed(KEY_RIGHT) && _directions.size() < 2)
+    {
+        _directions.push_back(Vector2i{1, 0});
+    }
 
-	if (IsKeyPressed(KEY_LEFT) && _direction.x != 1)
-	{
-		_direction = Vector2i{-1, 0};
-	}
+    else if (IsKeyPressed(KEY_LEFT) && _directions.size() < 2)
+    {
+        _directions.push_back(Vector2i{-1, 0});
+    }
 }
 
 void Snake::Grow() 

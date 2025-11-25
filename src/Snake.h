@@ -4,6 +4,8 @@
 
 #include "MyMath/MyVectors.h"
 
+#include <deque>
+
 class Grid;
 
 class Snake
@@ -33,6 +35,7 @@ private:
 	Grid& _grid;
 
 	Vector2i _direction;
+	std::deque<Vector2i> _directions;
 
 	std::deque<Vector2i> _positions;
 

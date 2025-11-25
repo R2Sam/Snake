@@ -27,7 +27,7 @@ ifeq ($(OS),Windows_NT)
 	CXX := g++
 	RELEASE_FLAGS = -O3 -s -mwindows
 	LIBS := 
-	LIBS += $(LIB_DIR)/Raylib/libraylib.a -lopengl32 -lgdi32 -lwinmm  $(LIB_DIR)/Lua/libluajit.a -lgomp $(LIB_DIR)/rlImGui/librlImGui.a -lws2_32 -lwinmm
+	LIBS += $(LIB_DIR)/Raylib/libraylib.a -lopengl32 -lgdi32 -lwinmm  $(LIB_DIR)/Lua/libluajit.a -lgomp $(LIB_DIR)/rlImGui/librlImGui.a -lws2_32 -lwinmm -static
 else ifeq ($(ARCH),aarch64)
 	$(error Pi build not complete)
 	SHELL := /bin/bash
@@ -50,11 +50,11 @@ endif
 
 debug: FLAGS = $(DEBUG_FLAGS)
 debug: $(OBJS)
-	$(CXX) $(OBJS) -o $(BIN_DIR)/main $(LIBS)
+	$(CXX) $(OBJS) $(FLAGS) -o $(BIN_DIR)/main $(LIBS)
 
 release: FLAGS = $(RELEASE_FLAGS)
 release: $(OBJS)
-	$(CXX) $(OBJS) -o $(BIN_DIR)/$(NAME) $(LIBS)
+	$(CXX) $(OBJS) $(FLAGS) -o $(BIN_DIR)/$(NAME) $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(COMMON_FLAGS) $(FLAGS) -c $< -o $@

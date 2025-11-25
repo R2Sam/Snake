@@ -31,7 +31,8 @@ private:
 
 	std::optional<Snake> _snake;
 	u32 _snakeSize = 0;
-	bool _foodSpawned = false;
+	u32 _foodSpawned = 0;
+	u32 _maxFood = 1;
 
 	u32 _score = 0;
 	u32 _bestScore = 0;

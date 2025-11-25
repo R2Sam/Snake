@@ -30,7 +30,7 @@ void FirstScene::Update(const float deltaT)
 
 	if(_snake)
 	{
-		if (!_foodSpawned)
+		for (; _foodSpawned < _maxFood; _foodSpawned++)
 		{
 			if (!SpawnFood())
 			{
@@ -38,8 +38,6 @@ void FirstScene::Update(const float deltaT)
 
 				Start();
 			}
-
-			_foodSpawned = true;
 		}
 
 		u32 currentSnakeSize = _snake->GetSize();
@@ -47,9 +45,10 @@ void FirstScene::Update(const float deltaT)
 		{
 			_snakeSize = currentSnakeSize;
 
-			_foodSpawned = false;
+			_foodSpawned--;
 
-			_score += 10 * (std::max(0, int(_snakeSize / 5)) + 1);
+			_score += 10 * (int(_snakeSize / 5) + 1);
+			_maxFood = (int(_snakeSize / 10) + 1);
 
 			PlaySound(_pickupSound);
 		}
@@ -94,8 +93,9 @@ void FirstScene::Start()
 	}
 	_score = 0;
 
-	_snakeSize = 2;
-	_foodSpawned = false;
+	_snakeSize = _snake->GetSize();
+	_foodSpawned = 0;
+	_maxFood = 1;
 }
 
 bool FirstScene::SpawnFood() 
